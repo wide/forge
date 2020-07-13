@@ -9,8 +9,8 @@
     "Julien Martins Da Costa (https://github.com/jdacosta)"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/wide/forge.git"
+    "type": "git",
+    "url": "https://github.com/wide/forge.git"
   },
   "main": "lib",
   "bin": {

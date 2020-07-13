@@ -1,9 +1,9 @@
 import fs from 'fs'
-import _ from 'lodash'
 import path from 'path'
 import glob from 'glob'
 import fse from 'fs-extra'
 import { promisify } from 'util'
+import { merge } from './utils'
 import BASE_CONFIG from './base-config'
 
 
@@ -31,13 +31,17 @@ export const cwd = process.cwd()
 /**
  * Load rc file by name : [name].config.js -> .[name]rc.js -> .[name]rc -> package.json:[name]
  * @param {String} name 
- * @param {Object} ensure 
+ * @param {Object} base 
  * @return {Object}
  */
-export function loadRC(name, ensure = {}) {
-  const pkg = loadFile('package.json')
+export function loadRC(name, base = {}) {
   const rc = loadFile(`${name}.config.js`) || loadFile(`.${name}rc.js`) || loadFile(`.${name}rc`, true)
-  return _.merge(ensure, rc || pkg[name])
+  const pkg = loadFile('package.json') || {}
+  if(name === 'forge') {
+    console.log('FORGE RC', rc)
+    console.log('FORGE RC MERGED', merge(base, rc || pkg[name]))
+  }
+  return merge(base, rc || pkg[name])
 }
 
 
@@ -50,7 +54,7 @@ export function loadRC(name, ensure = {}) {
 export function loadFile(name, implicitJson = false) {
   const filepath = path.resolve(cwd, name)
   if(fs.existsSync(filepath)) {
-    delete require.cache[filepath]
+    delete require.cache[filepath] // bust cache
     return implicitJson
       ? JSON.parse(fs.readFileSync(filepath))
       : require(filepath)
@@ -62,7 +66,8 @@ export function loadFile(name, implicitJson = false) {
  * Base configuration merged with user config
  * @type {Object}
  */
-export const config = _.merge(BASE_CONFIG, loadRC('forge'))
+export const config = loadRC('forge', BASE_CONFIG)
+//console.log(config)
 
 
 /**

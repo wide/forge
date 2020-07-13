@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { config, absOutput } from './utils/workspace'
-import compiler   from './utils/compiler'
-import watcher    from './utils/watcher'
-import server     from './utils/server'
+import { config, absOutput } from './cli/workspace'
+import compiler   from './cli/compiler'
+import watcher    from './cli/watcher'
+import server     from './cli/server'
 import rimraf     from 'rimraf'
 import chalk      from 'chalk'
 import cpy        from 'cpy'

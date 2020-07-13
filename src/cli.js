@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import './utils/env'
+import './cli/env'
 import { nuke, copy, compile, build, watch, serve } from './tasks'
-import { config } from './utils/workspace'
+import { config } from './cli/workspace'
 import pkg from '../package.json'
 import yargs from 'yargs'
 import chalk from 'chalk'
