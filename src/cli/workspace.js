@@ -37,10 +37,6 @@ export const cwd = process.cwd()
 export function loadRC(name, base = {}) {
   const rc = loadFile(`${name}.config.js`) || loadFile(`.${name}rc.js`) || loadFile(`.${name}rc`, true)
   const pkg = loadFile('package.json') || {}
-  if(name === 'forge') {
-    console.log('FORGE RC', rc)
-    console.log('FORGE RC MERGED', merge(base, rc || pkg[name]))
-  }
   return merge(base, rc || pkg[name])
 }
 
@@ -67,7 +63,6 @@ export function loadFile(name, implicitJson = false) {
  * @type {Object}
  */
 export const config = loadRC('forge', BASE_CONFIG)
-//console.log(config)
 
 
 /**
