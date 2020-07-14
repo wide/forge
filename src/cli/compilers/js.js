@@ -7,12 +7,10 @@ import path from 'path'
 /**
  * Compile many JS files
  * @param {Object} ctx
- * @param {Array<String>} ctx.files
- * @param {String} ctx.base subfolder
- * @param {String} ctx.dest folder
  * @param {Object} config
+ * @param {Object} targetConfig
  */
-export default async function({ files, base, dest }, config) {
+export default async function(ctx, config, targetConfig) {
 
   // get .parcelrc
   const rc = loadRC('parcel', {
@@ -28,37 +26,53 @@ export default async function({ files, base, dest }, config) {
 
   // compile files
   const compiled = []
-  for(let file of files) {
+  for(let file of ctx.files) {
+    const stats = await compile(file, ctx, targetConfig, rc)
+    compiled.push(...stats)
+  }
 
-    // resolve output filename
-    const { outdest, outname } = resolveOutput(file, base, dest)
+  return compiled
+}
 
-    // init bundle as build-only (no watch, cache or hash)
-    const bundler = new Bundler(file, {
-      outDir: outdest,
-      outFile: outname,
-      watch: false,
-      cache: false,
-      contentHash: false,
-      minify: isProd,
-      sourceMaps: true,
-      autoInstall: false,
-      killWorkers: true,
-      logLevel: 2,
-      ...rc
-    })
 
-    // add built-in plugins
+/**
+ * Compile one TWIG file
+ * @param {String} file path
+ * @param {Object} ctx
+ * @param {Object} targetConfig
+ * @param {Object} rc 
+ */
+async function compile(file, ctx, targetConfig, rc) {
+
+  // resolve output filename
+  const { outdest, outname } = resolveOutput(file, ctx, targetConfig)
+
+  // init bundle as build-only (no watch, cache or hash)
+  const bundler = new Bundler(file, {
+    outDir: outdest,
+    outFile: outname,
+    watch: false,
+    cache: false,
+    contentHash: false,
+    minify: isProd,
+    sourceMaps: true,
+    autoInstall: false,
+    killWorkers: true,
+    logLevel: 2,
+    ...rc
+  })
+
+  // add built-in plugins
   for(let i = plugins.length; i--;) {
     plugins[i](rc)(bundler)
   }
 
-    // generate files
-    const bundle = await bundler.bundle()
-    for(let b of bundle.entryAsset.bundles) {
-      compiled.push({ filename: b.name, size: b.totalSize })
-    }
+  // generate files
+  const bundled = []
+  const bundle = await bundler.bundle()
+  for(let b of bundle.entryAsset.bundles) {
+    bundled.push({ filename: b.name, size: b.totalSize })
   }
 
-  return compiled
+  return bundled
 }

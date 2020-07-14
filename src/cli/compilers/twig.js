@@ -1,4 +1,4 @@
-import { loadRC, resolveOutput, postProcess, read, write } from '../workspace'
+import { loadRC, resolveOutput, postProcess, write } from '../workspace'
 import postprocess from './twig/postprocess'
 import Twig from './twig/instance'
 
@@ -6,12 +6,10 @@ import Twig from './twig/instance'
 /**
  * Compile many TWIG files
  * @param {Object} ctx
- * @param {Array<String>} ctx.files
- * @param {String} ctx.base subfolder
- * @param {String} ctx.dest folder
  * @param {Object} config
+ * @param {Object} targetConfig
  */
-export default async function({ files, base, dest }, config) {
+export default async function(ctx, config, targetConfig) {
 
   // get .twigrc
   const { data, functions, filters, ...rc } = loadRC('twig', {
@@ -43,8 +41,8 @@ export default async function({ files, base, dest }, config) {
 
   // compile files
   const compiled = []
-  for(let file of files) {
-    const stats = await compile(file, base, dest, rc)
+  for(let file of ctx.files) {
+    const stats = await compile(file, ctx, targetConfig, rc)
     compiled.push(...stats)
   }
 
@@ -55,14 +53,14 @@ export default async function({ files, base, dest }, config) {
 /**
  * Compile one TWIG file
  * @param {String} file path
- * @param {String} base subfolder
- * @param {String} dest folder
- * @param {Object} rc config
+ * @param {Object} ctx
+ * @param {Object} targetConfig
+ * @param {Object} rc
  */
-async function compile(file, base, dest, rc) {
+async function compile(file, ctx, targetConfig, rc) {
 
   // resolve output filename
-  const { outfile } = resolveOutput(file, base, dest, '.html')
+  const { outfile } = resolveOutput(file, ctx, targetConfig)
 
   // compile twig to html
   let html = Twig.twig({

@@ -6,10 +6,10 @@ import path from 'path'
 /**
  * Compile many SVG files
  * @param {Object} ctx
- * @param {Array<String>} ctx.files
- * @param {String} ctx.dest folder
+ * @param {Object} config
+ * @param {Object} targetConfig
  */
-export default async function({ files, dest }) {
+export default async function(ctx, config, targetConfig) {
 
   // load .svgrc
   const rc = loadRC('svg', {
@@ -25,7 +25,7 @@ export default async function({ files, dest }) {
 
   // create spriter instance
   const spriter = new Spriter(rc)
-  for(let file of files) {
+  for(let file of ctx.files) {
     spriter.add(file, null, await read(file))
   }
 
@@ -33,7 +33,7 @@ export default async function({ files, dest }) {
   const { symbol } = await compile(spriter)
 
   // write sprite in dest
-  const spritename = path.resolve(dest, symbol.sprite.path)
+  const spritename = path.resolve(ctx.dest, symbol.sprite.path)
   return [
     await write(spritename, symbol.sprite.contents)
   ]

@@ -80,18 +80,17 @@ export const absOutput = path.resolve(config.output)
 
 
 /**
- * Resolve input path and filenames
+ * Resolve input path and filenames into Context object
  * @param {String} entry 
- * @param {String} inputDir 
- * @param {Sring} outputDir 
- * @param {String} targetDir 
+ * @param {Object} config 
+ * @param {Object} targetConfig 
  * @return {Object}
  */
-export function resolveInput(entry, inputDir, outputDir, targetDir) {
-  const entrypath = path.resolve(inputDir, entry)
+export function resolveInput(entry, config, targetConfig) {
+  const entrypath = path.resolve(config.input, entry)
   const files = glob.sync(entrypath)
   const base = entry.includes('**') ? entry.split('**')[0] : ''
-  const dest = path.resolve(outputDir, targetDir)
+  const dest = path.resolve(config.output, targetConfig.output)
   return {
     files,      // [/src/assets/main.scss, /src/assets/foo.scss]
     base,       // /src/assets/
@@ -103,21 +102,20 @@ export function resolveInput(entry, inputDir, outputDir, targetDir) {
 /**
  * Resolve output path and filename
  * @param {String} file 
- * @param {String} base 
- * @param {String} dest 
- * @param {String} outputExt 
+ * @param {Object} ctx 
+ * @param {Object} targetConfig 
  * @return {Object}
  */
-export function resolveOutput(file, base, dest, outputExt) {
+export function resolveOutput(file, ctx, targetConfig) {
   const inputExt = path.extname(file)
-  const outname = path.basename(file, inputExt) + (outputExt || inputExt)
-  const outbase = path.dirname(file.split(base)[1])
-  const outdest = path.resolve(dest, outbase)
+  const outname = path.basename(file, inputExt) + (targetConfig.ext || inputExt)
+  const outbase = targetConfig.flatten ? '' : path.dirname(file.split(ctx.base)[1])
+  const outdest = path.resolve(ctx.dest, outbase)
   const outfile = path.resolve(outdest, outname)
   const outmap = `${outfile}.map`
   return {
     outname, // file.css
-    outbase, // foo
+    outbase, // foo (empty if flatten:true)
     outdest, // /project/dist/assets/foo
     outfile, // /project/dist/assets/foo/file.css
     outmap   // /project/dist/assets/foo/file.css.map

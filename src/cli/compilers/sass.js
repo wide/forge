@@ -14,12 +14,10 @@ const render = promisify(sass.render)
 /**
  * Compile many SCSS files
  * @param {Object} ctx
- * @param {Array<String>} ctx.files
- * @param {String} ctx.base subfolder
- * @param {String} ctx.dest folder
  * @param {Object} config
+ * @param {Object} targetConfig
  */
-export default async function({ files, base, dest }, config) {
+export default async function(ctx, config, targetConfig) {
 
   // get .sassrc
   const rc = loadRC('sass', {
@@ -43,8 +41,8 @@ export default async function({ files, base, dest }, config) {
 
   // compile files
   const compiled = []
-  for(let file of files) {
-    const stats = await compile(file, base, dest, rc)
+  for(let file of ctx.files) {
+    const stats = await compile(file, ctx, targetConfig, rc)
     compiled.push(...stats)
   }
 
@@ -55,18 +53,19 @@ export default async function({ files, base, dest }, config) {
 /**
  * Compile one SCSS file
  * @param {String} file path
- * @param {String} dest folder
- * @param {Object} rc config 
+ * @param {Object} ctx
+ * @param {Object} targetConfig
+ * @param {Object} rc
  */
-async function compile(file, base, dest, rc) {
+async function compile(file, ctx, targetConfig, rc) {
 
   // resolve output filename
-  const { outfile, outmap } = resolveOutput(file, base, dest, '.css')
+  const { outfile, outmap } = resolveOutput(file, ctx, targetConfig)
 
   // compile sass
   let { css, map } = await render({
     file,
-    outDir: dest,
+    outDir: ctx.dest,
     ...rc
   })
 

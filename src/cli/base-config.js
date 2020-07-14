@@ -11,13 +11,15 @@ export default {
       '!layouts/',
       '!components/'
     ],
-    output: ''
+    output: '',
+    ext: '.html'
   },
 
   sass: {
     observe: '**/*.{scss,sass}',
     entries: ['assets/{scss,sass}/*.{scss,sass}'],
-    output: 'assets/'
+    output: 'assets/',
+    ext: '.css'
   },
 
   js: {

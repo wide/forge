@@ -21,36 +21,36 @@ export default async function(targets = []) {
   for(let target of targets) {
 
     // fetch target config
-    const cfg = config[target]
+    const targetConfig = config[target]
     let done = 0
 
     // ignore target
-    if(cfg === false) {
+    if(targetConfig === false) {
       console.log(chalk`  {yellow.bold ~ skip} {magenta.bold ${target}} {yellow.bold (falsy config)}`)
       continue;
     }
 
     // bad config
-    if(!cfg || !cfg.entries) {
+    if(!targetConfig || !targetConfig.entries) {
       console.log(chalk`  {red.bold ✕ skip} {magenta.bold ${target}} {red.bold (missing config)}`)
       continue;
     }
 
     // get target's compiler
-    const compiler = _compilers[cfg.compiler || target]
+    const compiler = _compilers[targetConfig.compiler || target]
     if(!compiler) {
       throw `missing compiler for [${target}]`
     }
 
     // compiler has specific entries
-    for(let entry of cfg.entries) {
+    for(let entry of targetConfig.entries) {
 
       // resolve input path
-      const ctx = resolveInput(entry, config.input, config.output, cfg.output)
+      const ctx = resolveInput(entry, config, targetConfig)
 
       // execute compiler
       try {
-        const generated = await compiler(ctx, config)
+        const generated = await compiler(ctx, config, targetConfig)
         compiled.push(...generated)
         done += generated.length
       }
