@@ -13,7 +13,7 @@ export default async function(ctx, config, targetConfig) {
 
   // load .svgrc
   const rc = loadRC('svg', {
-    dest,
+    dest: ctx.dest,
     mode: {
       exemple: !isProd,
       symbol: {
