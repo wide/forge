@@ -34,7 +34,7 @@ npm install @wide/forge --save-dev
 
 **Specific commands**
 - clear dist folder: `forge nuke`
-- compile specific assets: `forge compile scss js`
+- compile specific assets: `forge compile sass js`
 - copy static assets to dist: `forge copy`
 
 
@@ -69,23 +69,30 @@ dist/
 
 ### Path config
 
-To change the path config, create a `.forgerc.js` file at the root of your project with a `twig` prop:
+To changethe path config config, create/edit the `.forgerc.js` file at the root of your project:
 ```js
 module.exports = {
+
+  // override twig path config
   twig: {
 
-    // in /src, files to watch, will trigger the compilation when changed
-    observe: '**/*.{twig,html}',
+    // files to watch in /src, will trigger the compilation when changed
+    observe: '**/*.{twig,html}', // watch src/index.twig and src/foo/bar.twig
 
     // in src/, files to compile, must be pages only
     entries: [
-      '**.twig',
-      '!layouts/',
-      '!components/'
+      '**.twig',      // build all twig into html (root = pages)
+      '!layouts/',    // but not the layouts
+      '!components/'  // nor the components
     ],
 
     // in dist/, subfolder to generate HTML files into
-    output: ''
+    // ex: pages ->  dist/pages/index.html
+    output: '', // no subfolder -> dist/index.html
+
+    // if true, build all file at dist level only
+    // ex: src/foo/bar.twig -> dist/bar.twig (foo subfolder is ignored)
+    flatten: false
   }
 }
 ```
