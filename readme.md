@@ -154,7 +154,7 @@ To change the path config, create a `.forgerc.js` file at the root of your proje
 module.exports = {
   sass: {
 
-    // in /src, files to watch, will trigger the compilation when changed
+    // files to watch in /src, will trigger the compilation when changed
     observe: '**/*.{scss,sass}',
 
     // in src/, files to compile, must be root level only
@@ -163,7 +163,11 @@ module.exports = {
     ],
 
     // in dist/, subfolder to generate CSS files into
-    output: 'assets/'
+    output: 'assets/', // -> dist/assets/main.css
+
+    // if true, build all file at dist level only
+    // ex: src/assets/foo/bar.scss -> dist/assets/bar.css (foo subfolder is ignored)
+    flatten: false
   }
 }
 ```
@@ -216,17 +220,21 @@ To change the path config, create a `.forgerc.js` file at the root of your proje
 module.exports = {
   js: {
 
-    // in /src, files to watch, will trigger the compilation when changed
+    // files to watch in /src, will trigger the compilation when changed
     observe: '**/*.js',
 
-    // in src/, files to compile, must be root level only
+    // in src/, files to compile
     entries: [
-      'assets/js/*.js',
-      '!assets/js/polyfills/**.js' // polyfills have a separate config
+      'assets/js/*.js', // build all root level files
+      '!assets/js/polyfills/**.js' // but not polyfills
     ],
 
     // in dist/, subfolder to generate JS files into
-    output: 'assets/'
+    output: 'assets/', // -> dist/assets/main.js
+
+    // if true, build all file at dist level only
+    // ex: src/assets/foo/bar.js -> dist/assets/bar.js (foo subfolder is ignored)
+    flatten: false
   }
 }
 ```
