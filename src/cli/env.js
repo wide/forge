@@ -5,6 +5,9 @@ import dotenv from 'dotenv'
 const ENVS = ['production', 'development']
 const FALLBACK = 'development'
 
+// resolve debug flag
+process.env.NODE_DEBUG = !!yargs.argv.debug
+
 // resolve current env
 if(!process.env.NODE_ENV) {
 

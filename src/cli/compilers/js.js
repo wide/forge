@@ -1,4 +1,4 @@
-import { isProd, loadRC, resolveOutput } from '../workspace'
+import { env, loadRC, resolveOutput } from '../workspace'
 import Bundler from 'parcel-bundler'
 import plugins from './parcel/plugins'
 import path from 'path'
@@ -54,7 +54,7 @@ async function compile(file, ctx, targetConfig, rc) {
     watch: false,
     cache: false,
     contentHash: false,
-    minify: isProd,
+    minify: env.prod,
     sourceMaps: true,
     autoInstall: false,
     killWorkers: true,

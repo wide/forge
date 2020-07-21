@@ -1,4 +1,4 @@
-import { isProd, loadRC, resolveOutput, postProcess, write } from '../workspace'
+import { env, loadRC, resolveOutput, postProcess, write } from '../workspace'
 import postprocess from './sass/postprocess'
 import plugins from './sass/plugins'
 import { promisify } from 'util'
@@ -25,7 +25,7 @@ export default async function(ctx, config, targetConfig) {
       './node_modules/'
     ],
     importer: [],
-    outputStyle: isProd ? 'compressed' : 'expanded',
+    outputStyle: env.prod ? 'compressed' : 'expanded',
     postprocess: {
       autoprefixer: false
     },

@@ -15,10 +15,13 @@ const writeFile = promisify(fs.writeFile)
 
 
 /**
- * Is production env
- * @type {Boolean}
+ * Is prod and/or debug mode
+ * @type {Object}
  */
-export const isProd = (process.env.NODE_ENV === 'production')
+export const env = {
+  prod: (process.env.NODE_ENV === 'production'),
+  debug: (process.env.NODE_DEBUG === 'true')
+}
 
 
 /**

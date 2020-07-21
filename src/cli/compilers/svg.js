@@ -1,4 +1,4 @@
-import { isProd, loadRC, read, write } from '../workspace'
+import { env, loadRC, read, write } from '../workspace'
 import Spriter from 'svg-sprite'
 import path from 'path'
 
@@ -15,7 +15,7 @@ export default async function(ctx, config, targetConfig) {
   const rc = loadRC('svg', {
     dest: ctx.dest,
     mode: {
-      exemple: !isProd,
+      exemple: !env.prod,
       symbol: {
         dest: '.',
         sprite: 'sprite.svg'
