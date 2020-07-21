@@ -38,8 +38,10 @@ export async function copy() {
  */
 export async function compile(...targets) {
   const _targets = targets.length ? targets : config.targets // no targets = all targets
-  console.log(chalk`{blue.bold #} compile {magenta.bold ${_targets.join(', ')}}`)
-  await compiler(_targets)
+  if(_targets.length) {
+    console.log(chalk`{blue.bold #} compile {magenta.bold ${_targets.join(', ')}}`)
+    await compiler(_targets)
+  }
 }
 
 
@@ -49,9 +51,11 @@ export async function compile(...targets) {
  */
 export async function watch(...targets) {
   const _targets = targets.length ? targets : config.targets // no targets = all targets
-  console.log(chalk`{blue.bold #} watch {magenta.bold ${_targets.join(', ')}}`)
-  for(const target of _targets) {
-    watcher(config[target].observe, async () => await compiler([target]))
+  if(_targets.length) {
+    console.log(chalk`{blue.bold #} watch {magenta.bold ${_targets.join(', ')}}`)
+    for(const target of _targets) {
+      watcher(config[target].observe, async () => await compiler([target]))
+    }
   }
 }
 
