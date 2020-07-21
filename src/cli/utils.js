@@ -19,7 +19,7 @@ export function isObject(item) {
  */
 export function merge(a, b) {
   let merged = Object.assign({}, a)
-  if(isObject(a) && isObject(b)) {
+  if(isObject(b)) {
     for(let k in b) {
       Object.assign(merged, {
         [k]: isObject(b[k]) ? merge(merged[k], b[k]) : b[k]
