@@ -79,11 +79,15 @@ module.exports = {
     // files to watch in /src, will trigger the compilation when changed
     observe: '**/*.{twig,html}', // watch src/index.twig and src/foo/bar.twig
 
-    // in src/, files to compile, must be pages only
+    // in src/, files to compile, should be pages only
     entries: [
       '**.twig',      // build all twig into html (root = pages)
-      '!layouts/',    // but not the layouts
-      '!components/'  // nor the components
+    ],
+
+    // do not compile twig file in layouts/ nor components/
+    exclude: [
+      'layouts/**.twig',
+      'components/**.twig'
     ],
 
     // in dist/, subfolder to generate HTML files into
@@ -226,8 +230,12 @@ module.exports = {
     // in src/, files to compile
     entries: [
       'assets/js/*.js', // build all root level files
-      '!assets/js/polyfills/**.js' // but not polyfills
     ],
+
+    // exclude polyfills from compilation
+    exclude: [
+      'assets/js/polyfills/**.js'
+    ]
 
     // in dist/, subfolder to generate JS files into
     output: 'assets/', // -> dist/assets/main.js
@@ -325,11 +333,14 @@ module.exports = {
 
     // in src/, files to copy
     entries: [
-      'assets/**',
-      // exclude compiled assets
-      '!assets/icons/**',
-      '!assets/scss/**',
-      '!assets/js/**'
+      'assets/**'
+    ],
+
+    // ignore to-be-compiled assets
+    exclude: [
+      'assets/icons/**',
+      'assets/scss/**',
+      'assets/js/**'
     ]
   }
 }
@@ -372,9 +383,11 @@ To add a new asset compiler, like Handlebars, follow this exemple:
   hbs: {
     observe: '**/*.{hbs,html}',
     entries: [
-      '**.hbs',
-      '!layouts/',
-      '!components/'
+      '**.hbs'
+    ],
+    exclude: [
+      'layouts/**.hbs',
+      'components/**.hbs'
     ],
     output: ''
   }

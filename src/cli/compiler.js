@@ -1,4 +1,4 @@
-import { cwd, config, resolveInput } from './workspace'
+import { env, cwd, config, resolveInput } from './workspace'
 import columnify from 'columnify'
 import compilers from './compilers'
 import chalk from 'chalk'
@@ -47,6 +47,15 @@ export default async function(targets = []) {
 
       // resolve input path
       const ctx = resolveInput(entry, config, targetConfig)
+      if(!ctx.files.length) {
+        continue // skip if no files resolved from entries glob path
+      }
+
+      // debug context
+      if(env.debug) {
+        console.log(chalk`  {gray.bold [debug]} {magenta.bold ${target}} input context`)
+        console.log(ctx)
+      }
 
       // execute compiler
       try {
@@ -67,7 +76,9 @@ export default async function(targets = []) {
   }
 
   // show generated files and their size
-  if(compiled.length) logResults(compiled)
+  if(compiled.length) {
+    logResults(compiled)
+  }
 }
 
 

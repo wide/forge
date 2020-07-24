@@ -23,7 +23,8 @@ export async function nuke() {
  */
 export async function copy() {
   console.log(chalk`{blue.bold #} copy static assets`)
-  const done = await cpy(config.copy.entries, absOutput, {
+  const entries = [...config.copy.entries, ...config.copy.exclude.map(ex => `!${ex}`)]
+  const done = await cpy(entries, absOutput, {
     cwd: config.input,
     overwrite: true,
     parents: true

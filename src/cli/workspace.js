@@ -90,8 +90,9 @@ export const absOutput = path.resolve(config.output)
  * @return {Object}
  */
 export function resolveInput(entry, config, targetConfig) {
-  const entrypath = path.resolve(config.input, entry)
-  const files = glob.sync(entrypath)
+  const entrypath = path.join(config.input, entry)
+  const exclude = (targetConfig.exclude || []).map(ex => path.join(config.input, ex))
+  const files = glob.sync(entrypath, { ignore: exclude })
   const base = entry.includes('**') ? entry.split('**')[0] : ''
   const dest = path.resolve(config.output, targetConfig.output)
   return {

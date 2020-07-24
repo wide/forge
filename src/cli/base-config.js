@@ -6,10 +6,10 @@ export default {
   
   twig: {
     observe: '**/*.{twig,html}',
-    entries: [
-      '**.twig',
-      '!layouts/',
-      '!components/'
+    entries: ['**.twig'],
+    exclude: [
+      'layouts/**.twig',
+      'components/**.twig'
     ],
     output: '',
     ext: '.html'
@@ -24,10 +24,8 @@ export default {
 
   js: {
     observe: '**/*.js',
-    entries: [
-      'assets/js/*.js',
-      '!assets/js/polyfills/**.js'
-    ],
+    entries: ['assets/js/*.js'],
+    exclude: ['assets/js/polyfills/**.js'],
     output: 'assets/'
   },
 
@@ -46,10 +44,12 @@ export default {
 
   copy: {
     entries: [
-      'assets/**',
-      '!assets/icons/**',
-      '!assets/scss/**',
-      '!assets/js/**'
+      'assets/**'
+    ],
+    exclude: [
+      'assets/icons/**',
+      'assets/scss/**',
+      'assets/js/**'
     ]
   }
 

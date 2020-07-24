@@ -18,7 +18,7 @@ try {
 
   // debug mode
   if(env.debug) {
-    console.log(chalk`{blue.bold #} debug {cyan.bold ${cwd}}`)
+    console.log(chalk`{gray.bold [debug]} config {cyan.bold ${cwd}}`)
     console.log(config)
   }
 
