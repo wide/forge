@@ -26,6 +26,8 @@ export default async function(ctx, config, targetConfig) {
     ],
     importer: [],
     outputStyle: env.prod ? 'compressed' : 'expanded',
+    sourceMap: true,
+    sourceMapEmbed: true,
     postprocess: {
       autoprefixer: false
     },
@@ -65,6 +67,7 @@ async function compile(file, ctx, targetConfig, rc) {
   // compile sass
   let { css, map } = await render({
     file,
+    outFile: outfile,
     outDir: ctx.dest,
     ...rc
   })
