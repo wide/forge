@@ -108,11 +108,12 @@ export function resolveInput(entry, config, targetConfig) {
  * @param {String} file 
  * @param {Object} ctx 
  * @param {Object} targetConfig 
+ * @param {String} outputExt 
  * @return {Object}
  */
-export function resolveOutput(file, ctx, targetConfig) {
+export function resolveOutput(file, ctx, targetConfig, outputExt) {
   const inputExt = path.extname(file)
-  const outname = path.basename(file, inputExt) + (targetConfig.ext || inputExt)
+  const outname = path.basename(file, inputExt) + (targetConfig.ext || outputExt || inputExt)
   const outbase = targetConfig.flatten ? '' : path.dirname(file.split(ctx.base)[1])
   const outdest = path.resolve(ctx.dest, outbase)
   const outfile = path.resolve(outdest, outname)

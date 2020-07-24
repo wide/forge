@@ -11,15 +11,13 @@ export default {
       'layouts/**.twig',
       'components/**.twig'
     ],
-    output: '',
-    ext: '.html'
+    output: ''
   },
 
   sass: {
     observe: '**/*.{scss,sass}',
     entries: ['assets/{scss,sass}/*.{scss,sass}'],
-    output: 'assets/',
-    ext: '.css'
+    output: 'assets/'
   },
 
   js: {

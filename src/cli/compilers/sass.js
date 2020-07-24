@@ -60,7 +60,7 @@ export default async function(ctx, config, targetConfig) {
 async function compile(file, ctx, targetConfig, rc) {
 
   // resolve output filename
-  const { outfile, outmap } = resolveOutput(file, ctx, targetConfig)
+  const { outfile, outmap } = resolveOutput(file, ctx, targetConfig, '.css')
 
   // compile sass
   let { css, map } = await render({

@@ -60,7 +60,7 @@ export default async function(ctx, config, targetConfig) {
 async function compile(file, ctx, targetConfig, rc) {
 
   // resolve output filename
-  const { outfile } = resolveOutput(file, ctx, targetConfig)
+  const { outfile } = resolveOutput(file, ctx, targetConfig, '.html')
 
   // compile twig to html
   let html = Twig.twig({
