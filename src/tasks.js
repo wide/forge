@@ -55,7 +55,10 @@ export async function watch(...targets) {
   if(_targets.length) {
     console.log(chalk`{blue.bold #} watch {magenta.bold ${_targets.join(', ')}}`)
     for(const target of _targets) {
-      watcher(config[target].observe, async () => await compiler([target]))
+      const _observe = Array.isArray(config[target].observe) ? config[target].observe : [config[target].observe]
+      for(let file of _observe) {
+        watcher(file, async () => await compiler([target]))
+      }
     }
   }
 }

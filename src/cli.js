@@ -40,7 +40,7 @@ try {
   }
 
   // execute command
-  commands[command](argv)
+  commands[command](argv, config)
 }
 catch(err) {
   console.error(err)

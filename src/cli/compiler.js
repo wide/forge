@@ -42,8 +42,11 @@ export default async function(targets = []) {
       throw `missing compiler for [${target}]`
     }
 
+    // ensure array of entries
+    const entries = Array.isArray(targetConfig.entries) ? targetConfig.entries : [targetConfig.entries]
+
     // compiler has specific entries
-    for(let entry of targetConfig.entries) {
+    for(let entry of entries) {
 
       // resolve input path
       const ctx = resolveInput(entry, config, targetConfig)
