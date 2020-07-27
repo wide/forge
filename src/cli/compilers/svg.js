@@ -1,4 +1,4 @@
-import { env, loadRC, read, write } from '../workspace'
+import { env, loadRC, cwd, read, write } from '../workspace'
 import Spriter from 'svg-sprite'
 import path from 'path'
 
@@ -16,6 +16,7 @@ export default async function(ctx, config, targetConfig) {
     dest: ctx.dest,
     mode: {
       exemple: !env.prod,
+      inline: true,
       symbol: {
         dest: '.',
         sprite: 'sprite.svg'
@@ -26,7 +27,8 @@ export default async function(ctx, config, targetConfig) {
   // create spriter instance
   const spriter = new Spriter(rc)
   for(let file of ctx.files) {
-    spriter.add(file, null, await read(file))
+    const filepath = path.resolve(cwd, file) // abs path to avoid empty id
+    spriter.add(filepath, null, await read(file))
   }
 
   // compile sprite
