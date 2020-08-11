@@ -24,8 +24,6 @@ export default async function(ctx, config, targetConfig) {
     }
   })
 
-  console.log(rc)
-
   // fetch data
   for(let key in data) {
     Twig.addGlobal(key, data[key])
