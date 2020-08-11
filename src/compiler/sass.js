@@ -73,6 +73,7 @@ async function compile(file, ctx, targetConfig, rc) {
   })
 
   // postprocess output
+  css = css.toString()
   css = await postProcess(file, css, rc, postprocess)
 
   // write files
