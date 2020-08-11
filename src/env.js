@@ -27,7 +27,11 @@ if(!process.env.NODE_ENV) {
 }
 
 // load .env vars
-dotenv.config()
+const { parsed } = dotenv.config()
+export const dot = parsed
+
+// return cli args
+export const argv = yargs.argv
 
 // return current env
 export default process.env.NODE_ENV

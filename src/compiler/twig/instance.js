@@ -1,7 +1,7 @@
-import Twig from 'twig'
-import globals from './plugins/globals'
+import Twig         from 'twig'
+import fake         from './functions/fake'
+import globals      from './plugins/globals'
 import implicitPath from './plugins/implicit-path'
-import fake from './functions/fake'
 
 
 // bust cache

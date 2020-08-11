@@ -1,6 +1,6 @@
 import { loadRC, resolveOutput, postProcess, write } from '../workspace'
-import postprocess from './twig/postprocess'
-import Twig from './twig/instance'
+import postprocess  from './twig/postprocess'
+import Twig         from './twig/instance'
 
 
 /**
@@ -23,6 +23,8 @@ export default async function(ctx, config, targetConfig) {
       beautify: true
     }
   })
+
+  console.log(rc)
 
   // fetch data
   for(let key in data) {
@@ -72,7 +74,7 @@ async function compile(file, ctx, targetConfig, rc) {
   }).render()
 
   // postprocess output
-  html = await postProcess(html, rc, postprocess)
+  html = await postProcess(file, html, rc, postprocess)
 
   // write files
   return [

@@ -1,6 +1,6 @@
 import { env, loadRC, cwd, read, write } from '../workspace'
-import Spriter from 'svg-sprite'
-import path from 'path'
+import Spriter  from 'svg-sprite'
+import path     from 'path'
 
 
 /**

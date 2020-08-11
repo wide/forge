@@ -1,5 +1,5 @@
 import autoprefixer from 'autoprefixer'
-import postcss from 'postcss'
+import postcss      from 'postcss'
 
 
 /**

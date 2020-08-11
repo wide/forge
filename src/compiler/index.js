@@ -1,13 +1,16 @@
-import { env, cwd, config, resolveInput } from './workspace'
-import columnify from 'columnify'
-import compilers from './compilers'
-import chalk from 'chalk'
-import path from 'path'
+import { env, cwd, config, resolveInput } from '../workspace'
+import columnify  from 'columnify'
+import chalk      from 'chalk'
+import path       from 'path'
+import twig       from './twig'
+import sass       from './sass'
+import svg        from './svg'
+import js         from './js'
+
 
 const KO = 1024
 const MO = KO*1024
-
-const _compilers = { ...compilers, ...config.compilers }
+const compilers = { twig, sass, svg, js, ...config.compilers }
 
 
 /**
@@ -37,7 +40,7 @@ export default async function(targets = []) {
     }
 
     // get target's compiler
-    const compiler = _compilers[targetConfig.compiler || target]
+    const compiler = compilers[targetConfig.compiler || target]
     if(!compiler) {
       throw `missing compiler for [${target}]`
     }

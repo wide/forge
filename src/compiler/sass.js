@@ -1,8 +1,8 @@
 import { env, loadRC, resolveOutput, postProcess, write } from '../workspace'
-import postprocess from './sass/postprocess'
-import plugins from './sass/plugins'
-import { promisify } from 'util'
-import sass from 'sass'
+import postprocess    from './sass/postprocess'
+import plugins        from './sass/plugins'
+import { promisify }  from 'util'
+import sass           from 'sass'
 
 
 /**
@@ -73,7 +73,7 @@ async function compile(file, ctx, targetConfig, rc) {
   })
 
   // postprocess output
-  css = await postProcess(css, rc, postprocess)
+  css = await postProcess(file, css, rc, postprocess)
 
   // write files
   return [

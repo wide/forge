@@ -3,8 +3,8 @@ import path from 'path'
 import glob from 'glob'
 import fse from 'fs-extra'
 import { promisify } from 'util'
-import { merge } from './utils'
-import BASE_CONFIG from './base-config'
+import { isPlainObject } from 'lodash'
+import BASE_CONFIG from './config'
 
 
 /**
@@ -130,18 +130,23 @@ export function resolveOutput(file, ctx, targetConfig, outputExt) {
 
 /**
  * Apply postprocess to output from RC config
+ * @param {String} file 
  * @param {String} input 
  * @param {Object} rc 
  * @param {Object} processes
  * @return {String} 
  */
-export async function postProcess(output, rc, processes) {
+export async function postProcess(file, output, rc, processes) {
   for(let key in rc.postprocess) {
-    if(typeof rc.postprocess[key] === 'function') {
-      output = await rc.postprocess[key](output, rc.postprocess[key])
-    }
-    else if(processes[key]) {
-      output = await processes[key](output, rc.postprocess[key])
+    const isEnabled = rc.postprocess[key] !== false
+    const fileIsExcluded = Array.isArray(rc.postprocess[key].exclude) && rc.postprocess[key].exclude.includes(file)
+    if(isEnabled && !fileIsExcluded) {
+      if(typeof rc.postprocess[key] === 'function') {
+        output = await rc.postprocess[key](output, rc.postprocess[key])
+      }
+      else if(processes[key]) {
+        output = await processes[key](output, rc.postprocess[key])
+      }
     }
   }
   return output
@@ -171,4 +176,23 @@ export async function write(filename, content) {
     filename,
     size: fs.statSync(filename).size
   }
+}
+
+
+/**
+ * Immutable deep merge
+ * @param {Object} a 
+ * @param {Object} b
+ * @return {Object} 
+ */
+export function merge(a, b) {
+  let merged = Object.assign({}, a)
+  if(isPlainObject(b)) {
+    for(let k in b) {
+      Object.assign(merged, {
+        [k]: isPlainObject(b[k]) ? merge(merged[k], b[k]) : b[k]
+      })
+    }
+  }
+  return merged
 }

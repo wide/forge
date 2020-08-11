@@ -48,7 +48,8 @@ export default {
       'assets/icons/**',
       'assets/scss/**',
       'assets/js/**'
-    ]
+    ],
+    output: ''
   }
 
 }

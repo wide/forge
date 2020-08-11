@@ -1,5 +1,5 @@
 import beautify from 'js-beautify'
-import _ from 'lodash'
+import _        from 'lodash'
 
 
 /**

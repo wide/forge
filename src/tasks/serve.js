@@ -1,10 +1,11 @@
-import BrowserSync from 'browser-sync'
-import { config, loadRC } from './workspace'
-import chalk from 'chalk'
+import { config, loadRC } from '../workspace'
+import BrowserSync        from 'browser-sync'
+import chalk              from 'chalk'
 
 
 /**
  * Sync instance
+ * @type {BrowserSync}
  */
 export const browser =  BrowserSync.create()
 

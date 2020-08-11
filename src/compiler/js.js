@@ -1,7 +1,7 @@
 import { env, loadRC, resolveOutput } from '../workspace'
-import Bundler from 'parcel-bundler'
-import plugins from './parcel/plugins'
-import path from 'path'
+import Bundler  from 'parcel-bundler'
+import plugins  from './parcel/plugins'
+import path     from 'path'
 
 
 /**
