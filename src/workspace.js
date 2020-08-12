@@ -141,11 +141,12 @@ export async function postProcess(file, output, rc, processes) {
     const isEnabled = rc.postprocess[key] !== false
     const fileIsExcluded = Array.isArray(rc.postprocess[key].exclude) && rc.postprocess[key].exclude.includes(file)
     if(isEnabled && !fileIsExcluded) {
+      const opts = isPlainObject(rc.postprocess[key]) ? rc.postprocess[key] : undefined
       if(typeof rc.postprocess[key] === 'function') {
-        output = await rc.postprocess[key](output, rc.postprocess[key])
+        output = await rc.postprocess[key](output, opts)
       }
       else if(processes[key]) {
-        output = await processes[key](output, rc.postprocess[key])
+        output = await processes[key](output, opts)
       }
     }
   }
