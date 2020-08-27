@@ -4,6 +4,7 @@ import glob from 'glob'
 import fse from 'fs-extra'
 import { promisify } from 'util'
 import { isPlainObject } from 'lodash'
+import { execSync } from 'child_process'
 import BASE_CONFIG from './config'
 
 
@@ -196,4 +197,14 @@ export function merge(a, b) {
     }
   }
   return merged
+}
+
+
+/**
+ * Execute function or cli command
+ * @param {Function|String} hook 
+ */
+export function execHook(hook, ...params) {
+  if(typeof hook === 'function') return hook(...params)
+  if(typeof hook === 'string') return execSync(hook, env.debug ? { stdio: 'inherit' } : {})
 }

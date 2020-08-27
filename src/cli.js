@@ -12,9 +12,33 @@ import chalk from 'chalk'
  */
 try {
 
-  // hello world
-  console.log(chalk`{blue.bold ${pkg.name}} v${pkg.version} {blueBright.bold (${process.env.NODE_ENV})}`)
+  // builtin commands
+  const nativeCommands = {
+    nuke,
+    copy,
+    watch: () => watch(...argv._),
+    compile: () => compile(...argv._),
+    build,
+    serve
+  }
+
+  // command list
+  const commands = {
+    ...nativeCommands,
+    ...config.commands
+  }
+
+  // resolve command name
   const argv = yargs.argv
+  const command = argv._.shift()
+  if(command && !commands[command]) {
+    throw `unknown command '${command}'`
+  }
+
+  // hello world - only for builtin commands
+  if(command in nativeCommands) {
+    console.log(chalk`{blue.bold ${pkg.name}} v${pkg.version} {blueBright.bold (${process.env.NODE_ENV})}`)
+  }
 
   // debug mode
   if(env.debug) {
@@ -22,26 +46,10 @@ try {
     console.log(config)
   }
 
-  // command list
-  const commands = {
-    nuke,
-    copy,
-    watch: () => watch(...argv._),
-    compile: () => compile(...argv._),
-    build,
-    serve,
-    ...config.commands
-  }
-
-  // resolve command name
-  const command = argv._.shift()
-  if(command && !commands[command]) {
-    throw `unknown command '${command}'`
-  }
-
   // execute command
   commands[command](argv, config)
 }
 catch(err) {
-  console.error(err)
+  console.error(chalk`{red.bold ${err}}`)
+  process.exit(1)
 }

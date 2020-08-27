@@ -1,4 +1,4 @@
-import { env, cwd, config, resolveInput } from '../workspace'
+import { env, cwd, config, resolveInput, execHook } from '../workspace'
 import columnify  from 'columnify'
 import chalk      from 'chalk'
 import path       from 'path'
@@ -45,6 +45,21 @@ export default async function(targets = []) {
       throw `missing compiler for [${target}]`
     }
 
+    // run before hook
+    if(targetConfig.hooks && targetConfig.hooks.before) {
+      try {
+        console.log(chalk`  {gray.bold +} run *before* hook`)
+        await execHook(targetConfig.hooks.before, targetConfig)
+      }
+      catch(err) {
+        process.exitCode = 1
+        console.log(chalk`  {red.bold ✕ *before* hook failed, try --debug for more info}`)
+        if(env.debug) {
+          console.log(chalk`  {red.bold ✕ ${err}}`)
+        }
+      }
+    }
+
     // ensure array of entries
     const entries = Array.isArray(targetConfig.entries) ? targetConfig.entries : [targetConfig.entries]
 
@@ -71,6 +86,22 @@ export default async function(targets = []) {
       }
       catch(err) {
         console.error(chalk`{red.bold Error!}`, err)
+        process.exitCode = 1
+      }
+    }
+
+    // run after hook
+    if(targetConfig.hooks && targetConfig.hooks.after) {
+      try {
+        console.log(chalk`  {gray.bold +} run *after* hook`)
+        await execHook(targetConfig.hooks.after, targetConfig, compiled)
+      }
+      catch(err) {
+        process.exitCode = 1
+        console.log(chalk`  {red.bold ✕ *after* hook failed, try --debug for more info}`)
+        if(env.debug) {
+          console.log(chalk`  {red.bold ✕ ${err}}`)
+        }
       }
     }
 
