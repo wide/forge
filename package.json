@@ -1,6 +1,6 @@
 {
   "name": "@wide/forge",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Zero-based configuration builder for frontend integration projects.",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
