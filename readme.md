@@ -96,7 +96,19 @@ module.exports = {
 
     // if true, build all file at dist level only
     // ex: src/foo/bar.twig -> dist/bar.twig (foo subfolder is ignored)
-    flatten: false
+    flatten: false,
+
+    // commands to execute around the compilation
+    hooks: {
+
+      // run before the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      before(target, compiled) {},
+
+      // run after the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      after(target, compiled) {}
+    }
   }
 }
 ```
@@ -171,7 +183,19 @@ module.exports = {
 
     // if true, build all file at dist level only
     // ex: src/assets/foo/bar.scss -> dist/assets/bar.css (foo subfolder is ignored)
-    flatten: false
+    flatten: false,
+
+    // commands to execute around the compilation
+    hooks: {
+
+      // run before the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      before(target, compiled) {},
+
+      // run after the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      after(target, compiled) {}
+    }
   }
 }
 ```
@@ -242,7 +266,19 @@ module.exports = {
 
     // if true, build all file at dist level only
     // ex: src/assets/foo/bar.js -> dist/assets/bar.js (foo subfolder is ignored)
-    flatten: false
+    flatten: false,
+
+    // commands to execute around the compilation
+    hooks: {
+
+      // run before the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      before(target, compiled) {},
+
+      // run after the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      after(target, compiled) {}
+    }
   }
 }
 ```
@@ -296,7 +332,19 @@ module.exports = {
     ],
 
     // in dist/, subfolder to generate the sprite file into
-    output: 'assets/'
+    output: 'assets/',
+
+    // commands to execute around the compilation
+    hooks: {
+
+      // run before the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      before(target, compiled) {},
+
+      // run after the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      after(target, compiled) {}
+    }
   }
 }
 ```

@@ -49,7 +49,7 @@ export default async function(targets = []) {
     if(targetConfig.hooks && targetConfig.hooks.before) {
       try {
         console.log(chalk`  {gray.bold +} run *before* hook`)
-        await execHook(targetConfig.hooks.before, targetConfig)
+        await execHook(targetConfig.hooks.before, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
