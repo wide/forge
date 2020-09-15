@@ -76,9 +76,12 @@ async function compile(file, ctx, targetConfig, rc) {
   css = css.toString()
   css = await postProcess(file, css, rc, postprocess)
 
+  // prepare write files
+  const outWrite = [await write(outfile, css)]
+  if(map) {
+    outWrite.push(await write(outmap, map))
+  }
+
   // write files
-  return [
-    await write(outfile, css),
-    await write(outmap, map)
-  ]
+  return outWrite
 }
