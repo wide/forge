@@ -1,6 +1,6 @@
 {
   "name": "@wide/forge",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Zero-based configuration builder for frontend integration projects.",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
@@ -38,9 +38,9 @@
     "lodash": "^4.17.15",
     "parcel-bundler": "^1.12.4",
     "rimraf": "^3.0.0",
-    "sass": "^1.23.7",
+    "sass": "^1.29.0",
     "svg-sprite": "^1.5.0",
-    "twig": "^1.14.0",
+    "twig": "^1.15.4",
     "yargs": "^14.2.0"
   },
   "devDependencies": {
