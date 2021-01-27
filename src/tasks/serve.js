@@ -15,7 +15,7 @@ export const browser =  BrowserSync.create()
  */
 export default function(opts = {}) {
 
-  console.log(chalk`{blue.bold #} serve {cyan.bold ${config.output}}`)
+  console.log(chalk`{blue #} serve {cyan ${config.output}}`)
   const rc = loadRC('bsync')
 
   return browser.init({

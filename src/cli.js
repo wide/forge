@@ -37,12 +37,12 @@ try {
 
   // hello world - only for builtin commands
   if(command in nativeCommands) {
-    console.log(chalk`{blue.bold ${pkg.name}} v${pkg.version} {blueBright.bold (${process.env.NODE_ENV})}`)
+    console.log(chalk`{blue ${pkg.name}} v${pkg.version} {yellow (${process.env.NODE_ENV})}`)
   }
 
   // debug mode
   if(env.debug) {
-    console.log(chalk`{gray.bold [debug]} config {cyan.bold ${cwd}}`)
+    console.log(chalk`{gray [debug]} config {cyan ${cwd}}`)
     console.log(config)
   }
 
@@ -50,6 +50,6 @@ try {
   commands[command](argv, config)
 }
 catch(err) {
-  console.error(chalk`{red.bold ${err}}`)
+  console.error(chalk`{red ${err}}`)
   process.exit(1)
 }

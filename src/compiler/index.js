@@ -29,13 +29,13 @@ export default async function(targets = []) {
 
     // ignore target
     if(targetConfig === false) {
-      console.log(chalk`  {yellow.bold ~ skip} {magenta.bold ${target}} {yellow.bold (falsy config)}`)
+      console.log(chalk`  {yellow ~ skip} {magenta ${target}} {yellow (falsy config)}`)
       continue;
     }
 
     // bad config
     if(!targetConfig || !targetConfig.entries) {
-      console.log(chalk`  {red.bold ✕ skip} {magenta.bold ${target}} {red.bold (missing config)}`)
+      console.log(chalk`  {red ✕ skip} {magenta ${target}} {red (missing config)}`)
       continue;
     }
 
@@ -48,14 +48,14 @@ export default async function(targets = []) {
     // run before hook
     if(targetConfig.hooks && targetConfig.hooks.before) {
       try {
-        console.log(chalk`  {gray.bold +} run *before* hook`)
+        console.log(chalk`  {gray +} run *before* hook`)
         await execHook(targetConfig.hooks.before, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
-        console.log(chalk`  {red.bold ✕ *before* hook failed, try --debug for more info}`)
+        console.log(chalk`  {red ✕ *before* hook failed, try --debug for more info}`)
         if(env.debug) {
-          console.log(chalk`  {red.bold ✕ ${err}}`)
+          console.log(chalk`  {red ✕ ${err}}`)
         }
       }
     }
@@ -74,7 +74,7 @@ export default async function(targets = []) {
 
       // debug context
       if(env.debug) {
-        console.log(chalk`  {gray.bold [debug]} {magenta.bold ${target}} input context`)
+        console.log(chalk`  {gray [debug]} {magenta ${target}} input context`)
         console.log(ctx)
       }
 
@@ -85,7 +85,7 @@ export default async function(targets = []) {
         done += generated.length
       }
       catch(err) {
-        console.error(chalk`{red.bold Error!}`, err)
+        console.error(chalk`{red Error!}`, err)
         process.exitCode = 1
       }
     }
@@ -93,21 +93,21 @@ export default async function(targets = []) {
     // run after hook
     if(targetConfig.hooks && targetConfig.hooks.after) {
       try {
-        console.log(chalk`  {gray.bold +} run *after* hook`)
+        console.log(chalk`  {gray +} run *after* hook`)
         await execHook(targetConfig.hooks.after, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
-        console.log(chalk`  {red.bold ✕ *after* hook failed, try --debug for more info}`)
+        console.log(chalk`  {red ✕ *after* hook failed, try --debug for more info}`)
         if(env.debug) {
-          console.log(chalk`  {red.bold ✕ ${err}}`)
+          console.log(chalk`  {red ✕ ${err}}`)
         }
       }
     }
 
     // warn if no file compiled
     if(!done) {
-      console.log(chalk`  {yellow.bold ~ skip} {magenta.bold ${target}} {yellow.bold (no entries)}`)
+      console.log(chalk`  {yellow ~ skip} {magenta ${target}} {yellow (no entries)}`)
       continue
     }
   }
@@ -129,11 +129,12 @@ function logResults(compiled) {
     const dirname = path.dirname(path.relative(cwd, o.filename))
     const basename = path.basename(o.filename)
     return {
-      status: chalk`{green.bold ✓}`,
-      output: chalk`${dirname}${path.sep}{cyan.bold ${basename}}`,
+      status: chalk`{green ✓}`,
+      output: chalk`${dirname}${path.sep}{cyan ${basename}}`,
       size: (o.size > MO)
-        ? chalk`{blueBright.bold ${(o.size / MO).toFixed(2)} mo}`
-        : chalk`{blueBright.bold ${(o.size / KO).toFixed(2)} ko}`
+        ? chalk`{blue ${(o.size / MO).toFixed(2)} mo}`
+        : chalk`{blue ${(o.size / KO).toFixed(2)} ko}`,
+      cached: o.cached ? chalk`{yellow (cached)}` : ''
     }
   })
 
@@ -141,7 +142,8 @@ function logResults(compiled) {
     showHeaders: false,
     config: {
       status: { align: 'right', minWidth: 3 },
-      size: { align: 'right', minWidth: 12 }
+      size: { align: 'right', minWidth: 12 },
+      cached: { align: 'right', minWidth: 10 }
     }
   }))
 }
