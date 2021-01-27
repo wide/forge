@@ -173,10 +173,16 @@ export async function read(filename) {
  */
 export async function write(filename, content) {
   await fse.ensureFile(filename)
-  await writeFile(filename, content)
+  const cached = await newContentIsIdentical(filename, content)
+
+  if(!cached) {
+    await writeFile(filename, content)
+  }
+
   return {
     filename,
-    size: fs.statSync(filename).size
+    size: fs.statSync(filename).size,
+    cached
   }
 }
 
@@ -207,4 +213,21 @@ export function merge(a, b) {
 export function execHook(hook, ...params) {
   if(typeof hook === 'function') return hook(...params)
   if(typeof hook === 'string') return execSync(hook, env.debug ? { stdio: 'inherit' } : {})
+}
+
+
+/**
+ * Check if the new content is identical to the old one if the file exists
+ * @param {String} filename
+ * @param {String} newContent
+ * @return {Boolean}
+ */
+async function newContentIsIdentical(filename, newContent) {
+  try {
+    return !Buffer.isBuffer(newContent)
+      ? await read(filename) === newContent
+      : false
+  } catch (err) {
+    return false
+  }
 }

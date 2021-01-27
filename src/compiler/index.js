@@ -133,7 +133,8 @@ function logResults(compiled) {
       output: chalk`${dirname}${path.sep}{cyan.bold ${basename}}`,
       size: (o.size > MO)
         ? chalk`{blueBright.bold ${(o.size / MO).toFixed(2)} mo}`
-        : chalk`{blueBright.bold ${(o.size / KO).toFixed(2)} ko}`
+        : chalk`{blueBright.bold ${(o.size / KO).toFixed(2)} ko}`,
+      cached: o.cached ? chalk`{green.bold (cached)}` : ''
     }
   })
 
@@ -141,7 +142,8 @@ function logResults(compiled) {
     showHeaders: false,
     config: {
       status: { align: 'right', minWidth: 3 },
-      size: { align: 'right', minWidth: 12 }
+      size: { align: 'right', minWidth: 12 },
+      cached: { align: 'right', minWidth: 12 }
     }
   }))
 }
