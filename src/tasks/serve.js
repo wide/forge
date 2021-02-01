@@ -23,6 +23,7 @@ export default function(opts = {}) {
     open: opts.open,
     ghostMode: false,
     files: `${config.output}/**/*`,
+    ignore: '**/*.map',
     server: {
       baseDir: config.output,
       directory: false

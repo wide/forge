@@ -7,6 +7,11 @@ import { isPlainObject } from 'lodash'
 import { execSync } from 'child_process'
 import BASE_CONFIG from './config'
 
+/**
+ * Global Cache
+ */
+const globalCache = []
+
 
 /**
  * Enable await/async fron FS functions
@@ -173,9 +178,14 @@ export async function read(filename) {
  */
 export async function write(filename, content) {
   await fse.ensureFile(filename)
-  const cached = await newContentIsIdentical(filename, content)
+  const cached = env.prod 
+    ? false
+    : newContentIsIdentical(filename, content)
 
   if(!cached) {
+    if(!Buffer.isBuffer(content) && !env.prod) {
+      globalCache[filename] = content
+    } 
     await writeFile(filename, content)
   }
 
@@ -222,12 +232,13 @@ export function execHook(hook, ...params) {
  * @param {String} newContent
  * @return {Boolean}
  */
-async function newContentIsIdentical(filename, newContent) {
-  try {
+function newContentIsIdentical(filename, newContent) {
+  if(fs.existsSync(filename) && typeof globalCache[filename] !== 'undefined') {
     return !Buffer.isBuffer(newContent)
-      ? await read(filename) === newContent
+      ? globalCache[filename] === newContent
       : false
-  } catch (err) {
+  } 
+  else {
     return false
   }
 }
