@@ -2,7 +2,7 @@ export default {
 
   input: 'src/',
   output: 'dist/',
-  targets: ['twig', 'sass', 'js', 'polyfills', 'svg'],
+  targets: ['twig', 'sass', 'js', 'polyfills', 'svg', 'favicons'],
   
   twig: {
     observe: '**/*.{twig,html}',
@@ -32,6 +32,12 @@ export default {
     observe: 'assets/js/polyfills/**/*.js',
     entries: 'assets/js/polyfills/**.js',
     output: 'assets/polyfills'
+  },
+
+  favicons: {
+    observe: 'assets/favicon.png',
+    entries: 'assets/favicon.png',
+    output: 'assets/favicons'
   },
 
   svg: {

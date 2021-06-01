@@ -6,11 +6,12 @@ import twig       from './twig'
 import sass       from './sass'
 import svg        from './svg'
 import js         from './js'
+import favicons   from './favicons'
 
 
 const KO = 1024
 const MO = KO*1024
-const compilers = { twig, sass, svg, js, ...config.compilers }
+const compilers = { twig, sass, svg, js, favicons, ...config.compilers }
 
 
 /**

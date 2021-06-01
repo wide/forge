@@ -26,7 +26,7 @@ export default function(opts = {}) {
     ignore: '**/*.map',
     server: {
       baseDir: config.output,
-      directory: false
+      directory: true
     },
     port: opts.port || 1234,
     https: opts.https,
