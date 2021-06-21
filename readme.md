@@ -22,6 +22,8 @@ npm install @wide/forge --save-dev
 - [HTML / TWIG](#html--twig)
 - [CSS / SASS](#css--sass)
 - [JS / ESNEXT](#js--esnext)
+- [SVG Sprite](#svg-sprite)
+- [Favicons](#favicons)
 - [Other assets](#other-assets)
 - [Advanced usage](#advanced-usage)
 
@@ -310,7 +312,7 @@ module.exports = {
 ```
 
 
-## SVG SPRITE
+## SVG Sprite
 
 - source files: `/src/assets/icons/*.svg`
 - destination: `/dist/assets/sprite.svg`
@@ -363,6 +365,54 @@ Notes:
 - `dest` is reserved, do not change
 - `mode.symbol.sprite` is `sprite.svg` by default
 - `mode.exemple` is `false` on `PRODUCTION` by default
+
+
+## Favicons
+
+- source files: `/src/assets/favicon.png`
+- destination: `/dist/assets/favicons`
+- compiled using [`favicons`](https://www.npmjs.com/package/favicons)
+
+### Path config
+
+To change the path config, create a `.forgerc.js` file at the root of your project with a `favicons` prop:
+```js
+module.exports = {
+  favicons: {
+
+    // in /src, files to watch, will trigger the compilation when changed
+    observe: 'assets/favicon.png',
+
+    // in src/, file to compile, must be root level only
+    entries: 'assets/favicons.png',
+
+    // in dist/, subfolder to generate the sprite file into
+    output: 'assets/favicons/',
+
+    // commands to execute around the compilation
+    hooks: {
+
+      // run before the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      before(target, compiled) {},
+
+      // run after the compilation, can be a string "npm run something"
+      // or a function receiving the current target and the compiled files
+      after(target, compiled) {}
+    }
+  }
+}
+```
+
+### Favicons config
+
+To edit the config of `favicons` itself, create a `.faviconsrc.js` file at the root of your project:
+```js
+module.exports = {
+  // all props described here:
+  // https://github.com/itgalaxy/favicons#usage
+}
+```
 
 
 ## Other assets
