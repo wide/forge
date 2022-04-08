@@ -1,14 +1,7 @@
+import * as sass from 'sass-embedded'
 import { env, loadRC, resolveOutput, postProcess, write } from '../workspace'
-import postprocess    from './sass/postprocess'
-import plugins        from './sass/plugins'
-import { promisify }  from 'util'
-import sass           from 'sass'
-
-
-/**
- * Enable await/async on render function
- */
-const render = promisify(sass.render)
+import postprocess from './sass/postprocess'
+import importers from './sass/importers'
 
 
 /**
@@ -21,13 +14,13 @@ export default async function(ctx, config, targetConfig) {
 
   // get .sassrc
   const rc = loadRC('sass', {
-    includePaths: [
+    loadPaths: [
+      './',
       './node_modules/'
     ],
-    importer: [],
-    outputStyle: env.prod ? 'compressed' : 'expanded',
+    importers: [],
+    style: env.prod ? 'compressed' : 'expanded',
     sourceMap: true,
-    sourceMapEmbed: true,
     postprocess: {
       autoprefixer: false
     },
@@ -36,9 +29,13 @@ export default async function(ctx, config, targetConfig) {
     }
   })
 
-  // add built-in plugins
-  for(let i = plugins.length; i--;) {
-    rc.importer.push(plugins[i](rc))
+  // add built-in importers
+  if (importers.length) {
+    const methods = {}
+    for(let i = importers.length; i--;) {
+      methods[importers[i].name] = importers[i](rc)
+    }
+    rc.importers.push(methods)
   }
 
   // compile files
@@ -65,10 +62,7 @@ async function compile(file, ctx, targetConfig, rc) {
   const { outfile, outmap } = resolveOutput(file, ctx, targetConfig, '.css')
 
   // compile sass
-  let { css, map } = await render({
-    file,
-    outFile: outfile,
-    outDir: ctx.dest,
+  let { css, sourceMap } = await sass.compileAsync(file, {
     ...rc
   })
 
@@ -78,8 +72,8 @@ async function compile(file, ctx, targetConfig, rc) {
 
   // prepare write files
   const outWrite = [await write(outfile, css)]
-  if(map) {
-    outWrite.push(await write(outmap, map))
+  if(sourceMap) {
+    outWrite.push(await write(outmap, JSON.stringify(sourceMap)))
   }
 
   // write files
