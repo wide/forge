@@ -163,7 +163,7 @@ Notes:
 
 - source files: `/src/assets/**/*.{sass,scss}`
 - destination: `/dist/assets/*.css` and `/dist/assets/*.css.map`
-- compiled using [`sass`](https://www.npmjs.com/package/sass)
+- compiled using [`sass-embedded`](https://www.npmjs.com/package/sass-embedded)
 
 ### Path config
 
@@ -209,10 +209,13 @@ To edit the config of `sass` itself, create a `.sassrc.js` file at the root of y
 module.exports = {
 
   // path to look-up
-  includePaths: [],
+  loadPaths: [],
 
-  // enable of disable minification, see https://github.com/sass/node-sass#outputstyle
-  outputStyle,
+  // enable of disable minification, see https://sass-lang.com/documentation/js-api/modules#OutputStyle
+  style: 'compressed', // or 'expanded'
+
+  // source map (by default enabled on dev instances)
+  sourceMap: true,
 
   // post-process middlewares
   postprocess: {
@@ -223,13 +226,14 @@ module.exports = {
   },
 
   // ... and all others props described here:
-  // https://github.com/sass/node-sass#options
+  // https://sass-lang.com/documentation/js-api/interfaces/Options
 }
 ```
 
 Notes:
-- `includePaths` includes `node_modules/` by default
-- `outputStyle` is `compressed` on `PRODUCTION` by default
+- `loadPaths` includes `./` and `./node_modules/` by default
+- `style` is `compressed` on `PRODUCTION` by default
+- `sourceMap` is disabled on `PRODUCTION` by default
 - `postprocess`: **Forge** comes with a set of post-process to enhance the quality of the generated CSS
   - `autoprefixer`: use [`autoprefixer`](https://www.npmjs.com/package/autoprefixer) to add browser-specific prefixes:
     - `false` disable the post-process
