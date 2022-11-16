@@ -20,9 +20,17 @@ const compilers = { twig, sass, svg, js, favicons, ...config.compilers }
  */
 export default async function(targets = []) {
 
-  // collect compiled files
-  const compiled = []
   for(let target of targets) {
+    // collect compiled files
+    const compiled = []
+
+    // generate hash and label for timer
+    const hash = Math.random().toString(36).substring(2, 7)
+    const labelTimer = chalk`  {white ± time (${hash})}`
+
+    // show the start of the compilation
+    console.time(labelTimer)
+    console.log(chalk`\n{white → start task ${target} (${hash})}`)
 
     // fetch target config
     const targetConfig = config[target]
@@ -49,14 +57,14 @@ export default async function(targets = []) {
     // run before hook
     if(targetConfig.hooks && targetConfig.hooks.before) {
       try {
-        console.log(chalk`  {gray +} run *before* hook`)
+        console.log(chalk`\n{blue +} run before hook for {magenta ${target}}`)
         await execHook(targetConfig.hooks.before, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
-        console.log(chalk`  {red ✕ *before* hook failed, try --debug for more info}`)
+        console.log(chalk`\n{red ✕ before hook failed for ${target}, try --debug for more info}`)
         if(env.debug) {
-          console.log(chalk`  {red ✕ ${err}}`)
+          console.log(chalk`{red ✕ ${err}}`)
         }
       }
     }
@@ -75,7 +83,7 @@ export default async function(targets = []) {
 
       // debug context
       if(env.debug) {
-        console.log(chalk`  {gray [debug]} {magenta ${target}} input context`)
+        console.log(chalk`{gray [debug]} {magenta ${target}} input context`)
         console.log(ctx)
       }
 
@@ -94,28 +102,31 @@ export default async function(targets = []) {
     // run after hook
     if(targetConfig.hooks && targetConfig.hooks.after) {
       try {
-        console.log(chalk`  {gray +} run *after* hook`)
+        console.log(chalk`\n{blue +} run after hook for {magenta ${target}}`)
         await execHook(targetConfig.hooks.after, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
-        console.log(chalk`  {red ✕ *after* hook failed, try --debug for more info}`)
+        console.log(chalk`{red ✕ after hook failed for ${target}, try --debug for more info}`)
         if(env.debug) {
-          console.log(chalk`  {red ✕ ${err}}`)
+          console.log(chalk`{red ✕ ${err}}`)
         }
       }
     }
 
     // warn if no file compiled
     if(!done) {
-      console.log(chalk`  {yellow ~ skip} {magenta ${target}} {yellow (no entries)}`)
+      console.log(chalk`{yellow ~ skip} {magenta ${target}} {yellow (no entries)}`)
       continue
     }
-  }
 
-  // show generated files and their size
-  if(compiled.length) {
-    logResults(compiled)
+    // show generated files and their size
+    if(compiled.length) {
+      console.log(chalk`\n{blue #} compile {magenta ${target}}`)
+      logResults(compiled)
+    }
+
+    console.timeEnd(labelTimer)
   }
 }
 
