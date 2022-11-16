@@ -8,7 +8,7 @@ import cpy    from 'cpy'
  * Copy assets
  */
 export default async function() {
-  console.log(chalk`{blue #} copy static assets`)
+  console.log(chalk`\n{blue #} copy static assets`)
   const entries = [...config.copy.entries, ...config.copy.exclude.map(ex => `!${ex}`)]
   const output = path.resolve(absOutput, config.copy.output)
   const done = await cpy(entries, output, {
