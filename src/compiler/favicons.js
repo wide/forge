@@ -1,6 +1,6 @@
 import { loadRC, write } from '../workspace'
 import path     from 'path'
-import favicons from 'favicons'
+import { favicons } from "favicons"
 
 
 /**

@@ -1,5 +1,5 @@
 import { env, loadRC, resolveOutput } from '../workspace'
-import Bundler  from 'parcel-bundler'
+import Parcel from "@parcel/core"
 import plugins  from './parcel/plugins'
 import path     from 'path'
 
@@ -48,7 +48,7 @@ async function compile(file, ctx, targetConfig, rc) {
   const { outdest, outname } = resolveOutput(file, ctx, targetConfig)
 
   // init bundle as build-only (no watch, cache or hash)
-  const bundler = new Bundler(file, {
+  const bundler = new Parcel(file, {
     outDir: outdest,
     outFile: outname,
     watch: false,
