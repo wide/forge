@@ -1,5 +1,5 @@
 import path   from 'path'
-import _glob  from 'glob'
+import { globSync, globHasMagic, Glob }  from 'glob'
 import fs     from 'fs'
 
 
@@ -30,8 +30,8 @@ function alias(rc) {
 function glob(rc) {
   return function(url, prev) {
     let filepath = path.resolve(path.dirname(prev), url) + `.{scss,sass,css}`
-    if(_glob.hasMagic(filepath, { nobrace: true })) {
-      const files = _glob.sync(filepath, { nodir: true })
+    if(globHasMagic(filepath, { nobrace: true })) {
+      const files = globSync(filepath, { nodir: true })
       let contents = ''
       for(let file of files) {
         contents += fs.readFileSync(file, 'utf8')

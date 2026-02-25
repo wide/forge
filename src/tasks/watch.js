@@ -36,7 +36,7 @@ export function watcher(globpath, fn) {
 export default async function(...targets) {
   const _targets = targets.length ? targets : config.targets // no targets = all targets
   if(_targets.length) {
-    console.log(chalk`{blue #} watch {magenta ${_targets.join(', ')}}`)
+    console.log(`${chalk.blue('#')} watch ${chalk.magenta(_targets.join(', '))}`)
     for(const target of _targets) {
       const _observe = Array.isArray(config[target].observe) ? config[target].observe : [config[target].observe]
       for(let file of _observe) {
