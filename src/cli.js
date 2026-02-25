@@ -3,9 +3,8 @@ import './env'
 import { nuke, copy, compile, build, watch, serve } from './tasks'
 import { env, cwd, config } from './workspace'
 import pkg from '../package.json'
-import yargs from 'yargs'
 import chalk from 'chalk'
-
+import yargs from 'yargs'
 
 /**
  * Run CLI command
@@ -37,12 +36,12 @@ try {
 
   // hello world - only for builtin commands
   if(command in nativeCommands) {
-    console.log(chalk`{blue ${pkg.name}} v${pkg.version} {yellow (${process.env.NODE_ENV})}`)
+    console.log(`${chalk.blue(pkg.name)} v${pkg.version} ${chalk.yellow(process.env.NODE_ENV)}`)
   }
 
   // debug mode
   if(env.debug) {
-    console.log(chalk`{gray [debug]} config {cyan ${cwd}}`)
+    console.log(`${chalk.gray('[debug]')} config ${chalk.cyan(cwd)}`)
     console.log(config)
   }
 
@@ -50,6 +49,6 @@ try {
   commands[command](argv, config)
 }
 catch(err) {
-  console.error(chalk`{red ${err}}`)
+  console.error(chalk.red(err))
   process.exit(1)
 }

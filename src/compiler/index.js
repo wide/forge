@@ -8,11 +8,9 @@ import svg        from './svg'
 import js         from './js'
 import favicons   from './favicons'
 
-
 const KO = 1024
 const MO = KO*1024
 const compilers = { twig, sass, svg, js, favicons, ...config.compilers }
-
 
 /**
  * Compile targets
@@ -30,7 +28,7 @@ export default async function(targets = []) {
 
     // ignore target
     if(targetConfig === false) {
-      console.log(chalk`  {yellow ~ skip} {magenta ${target}} {yellow (falsy config)}`)
+      console.log(chalk`  ${chalk.yellow('~ skip')} ${chalk.magenta(target)} ${chalk.yellow('(falsy config)')}`)
       continue;
     }
 
@@ -86,7 +84,7 @@ export default async function(targets = []) {
         done += generated.length
       }
       catch(err) {
-        console.error(chalk`{red Error!}`, err)
+        console.error(chalk.red('Error!', err))
         process.exitCode = 1
       }
     }
@@ -94,21 +92,21 @@ export default async function(targets = []) {
     // run after hook
     if(targetConfig.hooks && targetConfig.hooks.after) {
       try {
-        console.log(chalk`  {gray +} run *after* hook`)
+        console.log(chalk.gray('  + *after* hook failed, try --debug for more info'))
         await execHook(targetConfig.hooks.after, targetConfig, compiled)
       }
       catch(err) {
         process.exitCode = 1
-        console.log(chalk`  {red ✕ *after* hook failed, try --debug for more info}`)
+        console.log(chalk.red('  ✕ *after* hook failed, try --debug for more info'))
         if(env.debug) {
-          console.log(chalk`  {red ✕ ${err}}`)
+          console.log(`  ${chalk.red('x ' + err)}`)
         }
       }
     }
 
     // warn if no file compiled
     if(!done) {
-      console.log(chalk`  {yellow ~ skip} {magenta ${target}} {yellow (no entries)}`)
+      console.log(`  ${chalk.yellow('~ skip')} ${chalk.magenta(target)} ${chalk.yellow('(no entries)')}`)
       continue
     }
   }
@@ -130,8 +128,8 @@ function logResults(compiled) {
     const dirname = path.dirname(path.relative(cwd, o.filename))
     const basename = path.basename(o.filename)
     return {
-      status: chalk`{green ✓}`,
-      output: chalk`${dirname}${path.sep}{cyan ${basename}}`,
+      status: chalk.green('✓'),
+      output: `${dirname}${path.sep}${chalk.cyan(basename)}`,
       size: (o.size > MO)
         ? chalk`{blue ${(o.size / MO).toFixed(2)} mo}`
         : chalk`{blue ${(o.size / KO).toFixed(2)} ko}`,

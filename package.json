@@ -43,7 +43,7 @@
     "sass": "^1.97.3",
     "svg-sprite": "^2.0.4",
     "twig": "^1.17.1",
-    "yargs": "^18.0.0"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.6",
